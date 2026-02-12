@@ -1,15 +1,21 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaClock, FaTag, FaSearch, FaBook } from 'react-icons/fa';
+import { FaClock, FaTag, FaSearch, FaBook, FaPaperPlane, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
 import { blogPosts } from '../data/blogData';
 
 const Blog = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  
+  // --- ESTADOS PARA LA SUSCRIPCIÓN ---
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState('idle'); // idle, loading, success, error
+  const [message, setMessage] = useState('');
 
   const categories = ['all', ...new Set(blogPosts.map(post => post.category))];
 
+  // Lógica de filtrado
   const filteredPosts = blogPosts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -17,6 +23,43 @@ const Blog = () => {
     const matchesCategory = selectedCategory === 'all' || post.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  // --- FUNCIÓN PARA SUSCRIBIRSE ---
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    
+    if (!email) return;
+
+    setStatus('loading');
+    setMessage('');
+
+    try {
+      // Ajusta la URL si tu backend está en otro puerto o dominio en producción
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+      
+      const response = await fetch(`${API_URL}/api/subscribe`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setStatus('success');
+        setMessage(data.message);
+        setEmail(''); // Limpiar el input
+      } else {
+        setStatus('error');
+        setMessage(data.message);
+      }
+    } catch (error) {
+      setStatus('error');
+      setMessage('Error de conexión. Intenta nuevamente.');
+    }
+  };
 
   return (
     <div className="min-h-screen pt-24 pb-16 gradient-bg">
@@ -141,7 +184,7 @@ const Blog = () => {
           </div>
         )}
 
-        {/* Newsletter CTA */}
+        {/* Newsletter CTA Funcional */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -152,16 +195,40 @@ const Blog = () => {
           <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
             Comparto regularmente sobre arquitectura de software, microservicios y mejores prácticas de desarrollo
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+          
+          <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto relative">
             <input
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Tu email"
-              className="flex-grow px-6 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
+              required
+              disabled={status === 'loading' || status === 'success'}
+              className="flex-grow px-6 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white disabled:bg-gray-200"
             />
-            <button className="btn-primary bg-white text-primary-600 hover:bg-gray-100 whitespace-nowrap">
-              Suscribirme
+            <button 
+              type="submit"
+              disabled={status === 'loading' || status === 'success'}
+              className={`btn-primary bg-white text-primary-600 hover:bg-gray-100 whitespace-nowrap flex items-center justify-center gap-2 ${status === 'loading' ? 'opacity-75 cursor-not-allowed' : ''}`}
+            >
+              {status === 'loading' ? 'Enviando...' : 'Suscribirme'}
             </button>
-          </div>
+          </form>
+
+          {/* Mensajes de Feedback */}
+          {message && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`mt-4 flex items-center justify-center gap-2 text-lg font-medium ${
+                status === 'success' ? 'text-green-200' : 'text-red-200'
+              }`}
+            >
+              {status === 'success' ? <FaCheckCircle /> : <FaExclamationCircle />}
+              {message}
+            </motion.div>
+          )}
+
         </motion.div>
       </div>
     </div>
