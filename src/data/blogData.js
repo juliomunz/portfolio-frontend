@@ -9,8 +9,6 @@ export const blogPosts = [
 
 La llegada de los Grandes Modelos de Lenguaje (LLMs) ha marcado un antes y un después en nuestra industria. Ya no se trata solo de autocompletar líneas de código, sino de contar con un **"Pair Programmer"** incansable que potencia nuestra productividad.
 
----
-
 ## 1. Más allá del autocompletado
 Como ingenieros, el uso de herramientas como GitHub Copilot o ChatGPT nos permite optimizar el ciclo de vida del desarrollo (SDLC) en puntos clave:
 - **Generación de Boilerplate:** Estructurar CRUDS y configuraciones iniciales en segundos.
@@ -19,15 +17,11 @@ Como ingenieros, el uso de herramientas como GitHub Copilot o ChatGPT nos permit
 
 > "La IA es excelente en lo micro, pero el Ingeniero sigue siendo el arquitecto de lo macro, asegurando que cada pieza encaje en la visión global del sistema."
 
----
-
 ## 2. El rol del Ingeniero Humano
 Nuestra propuesta de valor se ha desplazado de "conocer la sintaxis" a la **validación y el juicio crítico**. Un LLM puede alucinar librerías inexistentes o sugerir patrones inseguros. Nuestra responsabilidad es:
 1. **Auditar la seguridad** del código generado.
 2. **Diseñar la arquitectura** escalable que la IA no puede visualizar por sí sola.
 3. **Validar la lógica de negocio** compleja.
-
----
 
 ## Conclusión
 La IA no viene a reemplazarnos, sino a potenciar a quienes sepan integrarla en su flujo diario. El objetivo final sigue siendo el mismo: entregar soluciones digitales de alta calidad.
@@ -47,9 +41,7 @@ La IA no viene a reemplazarnos, sino a potenciar a quienes sepan integrarla en s
     content: `
 # ¿Qué es RAG y por qué es el futuro de la IA empresarial?
 
-**Retrieval-Augmented Generation (RAG)** es la técnica que permite "conectar" un modelo como GPT-4 a tus propios datos empresariales (PDFs, bases de datos, documentación interna) sin necesidad de re-entrenar el modelo.
-
----
+**Retrieval-Augmented Generation (RAG)** es la técnica que permite "conectar" un modelo como GPT-4 a tus propios datos empresariales sin necesidad de re-entrenar el modelo.
 
 ## La Arquitectura de un sistema RAG
 Para implementar una solución robusta, seguimos cuatro pasos fundamentales:
@@ -58,8 +50,6 @@ Para implementar una solución robusta, seguimos cuatro pasos fundamentales:
 2. **Almacenamiento:** Uso de **Vector Databases** (como Pinecone o ChromaDB) para búsquedas semánticas.
 3. **Recuperación:** Identificación de los fragmentos de información más relevantes para la consulta.
 4. **Generación:** El LLM procesa la pregunta junto con el contexto recuperado para dar una respuesta precisa.
-
----
 
 ## Ejemplo: Implementación con LangChain
 En el ecosistema de **Python**, herramientas como LangChain facilitan enormemente este flujo:
@@ -75,8 +65,6 @@ qa = RetrievalQA.from_chain_type(
     retriever=vector_store.as_retriever()
 )
 \`\`\`
-
----
 
 ## Beneficios Clave
 - **Privacidad:** No expones datos confidenciales al entrenamiento público de los modelos.
@@ -99,7 +87,6 @@ qa = RetrievalQA.from_chain_type(
 
 En 2026, la IA ya no es una novedad, sino un componente crítico en finanzas, salud y gobierno. Esto nos obliga a enfrentar desafíos éticos sin precedentes.
 
----
 
 ## 1. El problema de la "Caja Negra"
 Si una IA rechaza un crédito o un diagnóstico, debemos ser capaces de explicar el **porqué**. La interpretabilidad de los modelos es hoy una prioridad técnica y legal.
@@ -109,7 +96,6 @@ Los modelos son espejos de sus datos. Si los datos históricos contienen sesgos,
 - **Auditorías de sesgo** en los datasets de entrenamiento.
 - **Mecanismos de control** para mitigar discriminaciones automatizadas.
 
----
 
 ## 3. Privacidad y el Marco Legal en Chile
 Con la evolución de la **Ley de Protección de Datos en Chile** y normativas globales, el manejo de información debe ser:
@@ -117,7 +103,6 @@ Con la evolución de la **Ley de Protección de Datos en Chile** y normativas gl
 - **Consentido:** Transparencia total sobre cuándo el usuario interactúa con un agente inteligente.
 - **Auditable:** Trazabilidad completa de las decisiones algorítmicas.
 
----
 
 > "Como ingenieros de software, somos los guardianes de la ética en la implementación técnica. No basta con que funcione; debe ser justo y seguro."
     `,
