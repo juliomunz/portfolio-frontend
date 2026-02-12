@@ -9,9 +9,19 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Contact from './pages/Contact';
 import NotFound from './pages/404';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import './index.css';
 
 function App() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const pageTitle = location.pathname === '/' 
+      ? 'Inicio' 
+      : location.pathname.substring(1).charAt(0).toUpperCase() + location.pathname.slice(2);
+    document.title = `${pageTitle} | Julio Muñoz`;
+  }, [location]);
   return (
     <Router>
       <ScrollToTop />
