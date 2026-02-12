@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -13,6 +13,7 @@ import { useEffect } from 'react';
 import './index.css';
 
 function App() {
+  // Ahora useLocation funcionará porque está importado arriba
   const location = useLocation();
 
   useEffect(() => {
