@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart } from 'lucide-react';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
 const LikeButton = ({ slug }) => {
     const [likes, setLikes] = useState(0);
@@ -58,12 +58,8 @@ const LikeButton = ({ slug }) => {
               ? 'bg-red-50 text-red-500 cursor-default' 
               : 'bg-gray-50 text-gray-400 hover:bg-red-50 hover:text-red-400'
           }`}
-        >
-          <Heart 
-            size={24} 
-            fill={isLiked ? "currentColor" : "none"} 
-            className={isLoading ? 'animate-pulse' : ''}
-          />
+          >
+          {isLiked ? <FaHeart size={24} /> : <FaRegHeart size={24} />}
           <span className="font-bold">{likes}</span>
         </button>
       </div>
