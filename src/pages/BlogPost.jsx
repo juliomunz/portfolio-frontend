@@ -2,7 +2,7 @@ import { useParams, Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaClock, FaArrowLeft, FaTag, FaCalendar, FaUser, FaShare } from 'react-icons/fa';
 import { blogPosts } from '../data/blogData';
-import ReactMarkdown from 'react-markdown';
+import LikeButton from '../components/LikeButton';
 
 const BlogPost = () => {
   const { id } = useParams();
@@ -167,6 +167,10 @@ const BlogPost = () => {
             })}
           </div>
         </motion.div>
+
+        <div className="max-w-2xl mx-auto my-12">
+          <LikeButton slug={post.slug} />
+        </div>
 
         {/* Author Bio */}
         <motion.div
