@@ -7,43 +7,38 @@ const Projects = () => {
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [visibleCount, setVisibleCount] = useState(6); // Mostrar solo 6 inicialmente
+  const [visibleCount, setVisibleCount] = useState(6);
   
   const GITHUB_USERNAME = 'juliomunz'; 
 
-  // Lista de repositorios que quieres que SIEMPRE salgan primero (en orden)
-  const PRIORITY_REPOS = ['red-urgencia-aconcagua', 'apiDesafio', 'inventario-joyeria'];
+  const PRIORITY_REPOS = ['red-urgencia-aconcagua', 'Proyecto-Kafka', 'inventario-joyeria'];
 
   useEffect(() => {
     const fetchRepos = async () => {
       try {
-        // Pedimos más repos (30) para tener de donde elegir, ordenados por última actualización
+
         const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=pushed&per_page=30`);
         if (response.ok) {
           const data = await response.json();
           
-          // Lógica de Ordenamiento Personalizada
+          // Lógica de Ordenamiento
           const sortedData = data.sort((a, b) => {
             const indexA = PRIORITY_REPOS.indexOf(a.name);
             const indexB = PRIORITY_REPOS.indexOf(b.name);
 
             // 1. Si ambos están en la lista de prioridad, respetar el orden de esa lista
             if (indexA !== -1 && indexB !== -1) return indexA - indexB;
-            
-            // 2. Si solo A está en prioridad, va primero
             if (indexA !== -1) return -1;
-            
-            // 3. Si solo B está en prioridad, va primero
             if (indexB !== -1) return 1;
-
-            // 4. Si ninguno es prioritario, ordenar por fecha de último push (más reciente primero)
             return new Date(b.pushed_at) - new Date(a.pushed_at);
           });
 
-          // Filtramos forks si quieres limpiar más (opcional)
-          // const cleanData = sortedData.filter(repo => !repo.fork);
+          const cleanData = sortedData.filter(repo => 
+            repo.name !== 'apiDesafio' &&
+            !repo.fork
+          );
 
-          setRepos(sortedData);
+          setRepos(cleanData);
         }
       } catch (error) {
         console.error("Error fetching repos:", error);
@@ -171,7 +166,7 @@ const Projects = () => {
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredRepos.length > 0 ? (
-                  // AQUI ESTA LA MAGIA: .slice(0, visibleCount)
+
                   filteredRepos.slice(0, visibleCount).map((repo, index) => (
                     <motion.a
                       key={repo.id}
@@ -181,7 +176,7 @@ const Projects = () => {
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      transition={{ delay: index * 0.05 }} // Delay escalonado suave
+                      transition={{ delay: index * 0.05 }}
                       className="card hover:-translate-y-1 hover:border-primary-500 border-2 border-transparent transition-all duration-300 flex flex-col h-full relative overflow-hidden"
                     >
                       {/* Badge para repos prioritarios */}
